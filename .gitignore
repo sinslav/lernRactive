@@ -1,0 +1,10 @@
+./build/
+/.cache
+/.composer
+/.config
+/.local
+/.idea
+
+*~
+
+node_modules/

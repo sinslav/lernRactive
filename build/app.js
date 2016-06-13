@@ -1,0 +1,7 @@
+(function() {
+
+
+}).call(this);
+
+//=require ../../node_modules/underscore/underscore-min.js
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIl9tYWluLmNvZmZlZSIsIl9kZXBlbmRlbmNpZXMuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7O0FBQUE7OztBQ0FBIiwiZmlsZSI6ImFwcC5qcyIsInNvdXJjZXNDb250ZW50IjpbIiIsIi8vPXJlcXVpcmUgLi4vLi4vbm9kZV9tb2R1bGVzL3VuZGVyc2NvcmUvdW5kZXJzY29yZS1taW4uanMiXSwic291cmNlUm9vdCI6Ii9zb3VyY2UvIn0=
