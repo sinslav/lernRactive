@@ -2,7 +2,7 @@ const gulp = require('gulp');
 const stylus = require('gulp-stylus');
 const jade = require('gulp-jade');
 const del = require('del');
-const concat = require('gulp-concat')
+const concat = require('gulp-concat');
 const gulpIf = require('gulp-if');
 const gulpPlumber = require('gulp-plumber');
 const gulpSourcemaps = require('gulp-sourcemaps');
@@ -12,7 +12,7 @@ const gulpUglify = require('gulp-uglify');
 const gulpCssMin = require('gulp-cssmin');
 const fileInclud = require('gulp-include');
 const imagemin = require('gulp-imagemin');
-const browserSync = require('browser-sync').create()
+const browserSync = require('browser-sync').create();
 
 const isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV == 'development'; 
 
@@ -79,7 +79,6 @@ gulp.task('scripts', function(){
 		.pipe(fileInclud())
 		.pipe(gulpIf('**/*.coffee',
             gulpCoffee()))
-				.pipe(concat('build.js'))
 		.pipe(concat('app.js'))
 		.pipe(gulpIf(isDevelopment, gulpSourcemaps.write()))
 		.pipe(gulpIf(!isDevelopment, gulpUglify()))
