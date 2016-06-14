@@ -1,9 +1,1 @@
-<!DOCTYPE html><html><head><title>TITLE</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><link rel="icon" type="image/png" href="i/favicon.png"><link href="css/main.css" rel="stylesheet" type="text/css"><!--if lt IE 9script(src='js/html5shiv.js')--></head><body><div id="container"><!--2. You can load a template in many ways. For convenience, we'll include it in a script tag so that we don't need to mess around with AJAX or multiline strings. Note that we've set the type attribute to 'text/ractive' - though it can be just about anything except 'text/javascript'--><script id="template" type="text/ractive"><p>Hello, {{name}}!</p></script></div><script>var ractive = new Ractive({
-// The `el` option can be a node, an ID, or a CSS selector.
-el: '#container',
-// We could pass in a string, but for the sake of convenience
-// we're passing the ID of the <script> tag above.
-template: '#template',
-// Here, we're passing in some initial data
-data: { name: 'world' }
-});</script><script src="js/build.js"></script></body></html>
+<!DOCTYPE html><html><head><title>TITLE</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><link rel="icon" type="image/png" href="i/favicon.png"><link href="main.css" rel="stylesheet" type="text/css"><!--if lt IE 9script(src='js/html5shiv.js')--></head><body><div id="container"><!--2. You can load a template in many ways. For convenience, we'll include it in a script tag so that we don't need to mess around with AJAX or multiline strings. Note that we've set the type attribute to 'text/ractive' - though it can be just about anything except 'text/javascript'--><script id="template" type="text/ractive"><p>Hello, {{name}}!</p></script></div><script src="app.js"></script></body></html>

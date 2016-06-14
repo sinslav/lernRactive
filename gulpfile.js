@@ -9,26 +9,33 @@ const gulpSourcemaps = require('gulp-sourcemaps');
 const gulpNotify = require('gulp-notify');
 const gulpCoffee = require('gulp-coffee');
 const gulpUglify = require('gulp-uglify');
-const fileInclud = require('gulp-file-include');
+const gulpCssMin = require('gulp-cssmin');
+const fileInclud = require('gulp-include');
+const imagemin = require('gulp-imagemin');
+const browserSync = require('browser-sync').create()
 
 const isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV == 'development'; 
+
 console.log("NODE_ENV isDevelopment = " +  isDevelopment);
 
 const path ={
 	"markup" :
 		{
 		"src" :  "./src/*.jade",
+		"watch": "./src/**/*.jade",
 		"dest" : "./build"
 		},
-	"css" :
+	"styles" :
 		{
-		"src" :  ["./src/assets/css/*.styl", "./src/assets/blocks/**.styl" ],
+		"src" :  "./src/assets/_main.styl",
+		"watch":  "./src/**/*.styl",
 		"dest" : "./build/"
 		},
 	"scripts" :
 		{
-		"src" :  ["./src/assets/js/_main.coffee", "./src/assets/js/_dependencies.js", "./src/assets/blocks/**.coffee" ],
-		"dest" :  ["./build/" ],
+		"src" :  ["./src/assets/_dependencies.js", "./src/assets/_main.coffee"],
+		"watch":  "./src/blocks/**/*.coffee",
+		"dest" :  "./build/",
 		},
 	"images" :
 		{
@@ -44,16 +51,26 @@ const path ={
 } 
 
 
+gulp.task('fonts', function(){
+	return gulp.src(path.fonts.src)
+		.pipe(gulp.dest(path.fonts.dest))
+});
+
+gulp.task('images', function(){
+	return gulp.src(path.images.src)
+		.pipe(imagemin())
+		.pipe(gulp.dest(path.images.dest))
+});
 
 gulp.task('clean', function(){
 	return del(path.all)
-})
+});
 
 gulp.task('jade', function(){
 	return gulp.src(path.markup.src)
 		.pipe(jade())
 		.pipe(gulp.dest(path.markup.dest))
-})
+});
 
 gulp.task('scripts', function(){
 	return gulp.src(path.scripts.src)
@@ -67,16 +84,41 @@ gulp.task('scripts', function(){
 		.pipe(gulpIf(isDevelopment, gulpSourcemaps.write()))
 		.pipe(gulpIf(!isDevelopment, gulpUglify()))
 		.pipe(gulp.dest(path.all))
+});
+
+gulp.task('styles', function(){
+	return gulp.src(path.styles.src)
+		.pipe(gulpPlumber({'errorHandler' : gulpNotify.onError("Error: <%= error %>")}))
+		.pipe(gulpIf(isDevelopment, gulpSourcemaps.init({includeContent: true})))
+		.pipe(stylus({'include css': true}))
+		.pipe(gulpIf(isDevelopment, gulpSourcemaps.write()))
+		.pipe(gulpIf(!isDevelopment, gulpCssMin()))
+		.pipe(concat('main.css'))
+		.pipe(gulp.dest(path.all))
+	});
+
+gulp.task('serve', function(){
+    browserSync.init({
+        server: {
+            baseDir: "./build"
+        }
+    });
+	browserSync.watch('web/build/**/*.*').on('change', browserSync.reload);
+	});
+
+gulp.task('jade', function(){
+	return gulp.src(path.markup.src)
+		.pipe(jade())
+		.pipe(gulp.dest(path.all))
+});
+
+gulp.task('watch', function() {
+  gulp.watch(path.styles.watch, gulp.series('styles'));
+  gulp.watch(path.scripts.watch, gulp.series('scripts'));
+  gulp.watch(path.markup.watch, gulp.series('jade'));
+});
 
 
+gulp.task('build', gulp.series('clean', 'styles', 'scripts', 'images', 'fonts', 'jade'));
 
-		// .pipe(gulpIf(isDevelopment, sourcemaps.init(includeContent: true)))
-		// .pipe(include())
-		// .pipe(gulpIf('**/*.coffee', coffee(bare: true).on('error', notify.onError("Error: <%= error %>"))))
-		// .pipe(debug(title: 'concat'))
-		// .pipe(concat('build.js'))
-		// .pipe(gulpIf(isDevelopment, sourcemaps.write()))
-		// .pipe(gulpIf(!isDevelopment, uglify()))
-		// .pipe gulp.dest(path.build.scripts)
-
-})
+gulp.task('dev', gulp.series('clean', 'styles', 'scripts', 'images', 'fonts', 'jade', gulp.parallel('watch', 'serve')));
